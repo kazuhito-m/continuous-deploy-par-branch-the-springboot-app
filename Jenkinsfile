@@ -6,7 +6,7 @@ node {
     }
     stage('Unit Test') {
       sh './gradlew clean test'
-      step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/*.xml']) // JUnitテストレポートを保存
+      step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/*.xml']) // JUnitテストレポートを保存
     }
     stage('Jar Build') {
       sh './gradlew build'
