@@ -39,6 +39,8 @@ node {
       def containerIp = getIpAddressByContainerName(containerName)
       // Nginxの設定ファイルとして「内部のコンテナを末尾ポートを削除した状態」で外へ公開する。
       sh "echo 'location ${contextPath} { proxy_pass http://${containerIp}:8080${contextPath}; }' > /etc/nginx/default.d/${containerName}.conf"
+      // Nginxの管理コマンドを叩いて「設定ファイルの読みなおし」をさせる。
+      sh 'nginx -s reload'
     }
 }
 
