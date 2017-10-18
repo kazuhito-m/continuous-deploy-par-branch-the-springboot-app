@@ -2,6 +2,10 @@
 # for Amazon Linux
 
 - hosts: all
+  remote_user: ec2-user
+  sudo: yes
+  gather_facts: no
+
   tasks:
 
     - name: locale setting
@@ -18,10 +22,13 @@
     - name: start docker
       service: name=docker enabled=yes state=started
 
+    - name: dockere commnad can execute all user.
+      shell: 'chmod +s /usr/bin/docker'
+
     # Jeknins install
 
     - name: yum jdk install for jenkins
-      yum: name=java-1.8.0-openjdk-devel state=installed
+      yum: name=java-1.8.0-openjdk-headless state=installed
 
     - name: jenkins repository install
       shell: 'curl http://pkg.jenkins-ci.org/redhat/jenkins.repo > /etc/yum.repos.d/jenkins.repo'
