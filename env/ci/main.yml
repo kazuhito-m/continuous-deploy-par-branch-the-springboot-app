@@ -1,0 +1,50 @@
+# coding:utf-8
+# for Amazon Linux
+
+- hosts: all
+  tasks:
+
+    - name: locale setting
+      shell: 'sudo cp -p  /usr/share/zoneinfo/Japan /etc/localtime'
+
+    - name: upgrade all packages
+      yum: name=* state=latest
+
+    # Docker install
+
+    - name: install docker
+      yum: name=docker-io disable_gpg_check=no state=installed
+
+    - name: start docker
+      service: name=docker enabled=yes state=started
+
+    # Jeknins install
+
+    - name: yum jdk install for jenkins
+      yum: name=java-1.8.0-openjdk-devel state=installed
+
+    - name: jenkins repository install
+      shell: 'curl http://pkg.jenkins-ci.org/redhat/jenkins.repo > /etc/yum.repos.d/jenkins.repo'
+
+    - name: jenkins key install
+      shell: 'rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key'
+
+    - name: jenkins install
+      yum: name=jenkins state=installed
+
+    - name: add docker group
+      group: name=docker state=present
+
+    - name: jenkins user add for docker
+      user: name=jenkins groups=docker append=yes
+
+    - name: jenkins service set
+      service: name=jenkins enabled=yes state=started
+
+    # Nginx install.
+
+    - name: install nginx
+      yum: name=nginx disable_gpg_check=no state=installed
+
+    - name: start nginx
+      service: name=nginx enabled=yes state=started
