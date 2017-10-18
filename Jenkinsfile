@@ -1,6 +1,9 @@
 def APP_NAME = 'sample-app'
 def JDK_DOCKER_IMAGE_NAME = 'openjdk:8-jre'
 node {
+    // 変数宣言(宣言だけ)
+    def contextPath = ''
+    def containerName = ''
     stage('Checkout Sources') {
       checkout scm
     }
@@ -16,10 +19,9 @@ node {
     }
     stage('Start Application in Docker container.') {
       def branchName = getBranchName()
-      def contextPath = '/' + APP_NAME + '/' + branchName
+      contextPath = '/' + APP_NAME + '/' + branchName
       def localJarDir = '/var/tmp' + contextPath
-      def containerName = APP_NAME + '_' + branchName
-
+      containerName = APP_NAME + '_' + branchName
       // 既存のコンテナがあれば削除
       sh "docker rm -f ${containerName} || echo 'Container already exists. Delete container.'"
       // あろうがなかろうが「Jarを置くディレクトリ」を再作成
