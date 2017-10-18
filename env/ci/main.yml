@@ -60,3 +60,6 @@
 
     - name: start nginx
       service: name=nginx enabled=yes state=started
+
+    - name: setting file directory change permission.
+      shell: 'chmod a+w /etc/nginx/default.d/'
