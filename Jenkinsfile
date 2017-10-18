@@ -28,7 +28,7 @@ node {
       sh "mv ./build/libs/*.jar ${localJarDir}/app.jar"
       // dockerコンテナを生成して、SpringBootアプリを起動。
 //      sh "docker run  --rm --name ${containerName} -v ${localJarDir}:/usr/src/myapp -w /usr/src/myapp ${JDK_DOCKER_IMAGE_NAME} java -jar ./*.jar --server.contextPath=${}"
-      def cmd = "docker -d run --name ${containerName} -v ${localJarDir}:/usr/src/myapp -w /usr/src/myapp ${JDK_DOCKER_IMAGE_NAME} java -jar ./app.jar --server.contextPath=${contextPath}"
+      def cmd = "docker run -d --rm --name ${containerName} -v ${localJarDir}:/usr/src/myapp -w /usr/src/myapp ${JDK_DOCKER_IMAGE_NAME} java -jar ./app.jar --server.contextPath=${contextPath}"
       echo 'execute command:' + cmd
       sh cmd
     }
