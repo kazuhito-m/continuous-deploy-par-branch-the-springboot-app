@@ -38,7 +38,7 @@ node {
       // Dockerのコンテナ名から「内部のIPアドレス」を割り出し。
       def containerIp = getIpAddressByContainerName(containerName)
       // Nginxの設定ファイルとして「内部のコンテナを末尾ポートを削除した状態」で外へ公開する。
-      sh "echo 'location /${contextPath} { proxy_pass http://${containerIp}:8080${contextPath}; }' > /etc/nginx/default.d/${containerName}.conf"
+      sh "echo 'location ${contextPath} { proxy_pass http://${containerIp}:8080${contextPath}; }' > /etc/nginx/default.d/${containerName}.conf"
     }
 }
 
