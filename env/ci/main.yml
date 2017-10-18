@@ -63,3 +63,6 @@
 
     - name: setting file directory change permission.
       shell: 'chmod a+w /etc/nginx/default.d/'
+
+    - name: nginx command change permission.
+      shell: 'chmod a+x /usr/sbin/nginx'
