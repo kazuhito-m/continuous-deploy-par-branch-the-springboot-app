@@ -16,7 +16,7 @@ node {
     }
     stage('Start App in Docker container.') {
       def branchName = getBranchName()
-      def context = '/' + APP_NAME + '/' + branchName
+      def contextPath = '/' + APP_NAME + '/' + branchName
       def localJarDir = '/var/tmp' + context
       def containerName = APP_NAME + '_' + branchName
 
@@ -25,10 +25,10 @@ node {
       // あろうがなかろうが「Jarを置くディレクトリ」を再作成
       sh "rm -rf ${localJarDir} && mkdir -p ${localJarDir}"
       // 予め作っておいたJarを移動
-      sh "mv ./build/libs/*.jar ${localJarDir}/"
+      sh "mv ./build/libs/*.jar ${localJarDir}/app.jar"
       // dockerコンテナを生成して、SpringBootアプリを起動。
 //      sh "docker run --rm --name ${containerName} -v ${localJarDir}:/usr/src/myapp -w /usr/src/myapp ${JDK_DOCKER_IMAGE_NAME} java -jar ./*.jar --server.contextPath=${}"
-      sh "docker run --name ${containerName} -v ${localJarDir}:/usr/src/myapp -w /usr/src/myapp ${JDK_DOCKER_IMAGE_NAME} java -jar ./*.jar --server.contextPath=${}"
+      sh "docker run --name ${containerName} -v ${localJarDir}:/usr/src/myapp -w /usr/src/myapp ${JDK_DOCKER_IMAGE_NAME} java -jar ./app.jar --server.contextPath=${contextPath}"
     }
 }
 
