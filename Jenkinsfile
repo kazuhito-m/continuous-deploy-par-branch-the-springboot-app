@@ -17,7 +17,7 @@ node {
     stage('Start App in Docker container.') {
       def branchName = getBranchName()
       def contextPath = '/' + APP_NAME + '/' + branchName
-      def localJarDir = '/var/tmp' + context
+      def localJarDir = '/var/tmp' + contextPath
       def containerName = APP_NAME + '_' + branchName
 
       // 既存のコンテナがあれば削除
