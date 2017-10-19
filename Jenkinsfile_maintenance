@@ -9,7 +9,7 @@ node {
   }
   stage('List remote branch name.') {
     def cmd = "git branch -a | grep 'origin' | sed -e 's/.*origin\\///g'"
-    activeBranchNames = sh(script: cmd, returnStdout: true).split(/\n/) // コマンド結果をListにして取得
+    activeBranchNames = sh(script: cmd, returnStdout: true).split(/\n/) as ArrayList // コマンド結果をListにして取得
   }
   stage('Remove inactive branch container.') {
     def cmd = "docker ps --format '{{.Names}}' | grep ${APP_NAME}_"
@@ -18,7 +18,7 @@ node {
     applicationContainerNames.each{
       def branchName = it.replace("${APP_NAME}_", '').trim()
       echo "デバッグ:ブランチ名:" + branchName
-      if (!activeBranchNames.any{it == branchName}) sh "docker rm -f ${it}"
+      if (!activeBranchNames.contains(branchName)) sh "docker rm -f ${it}"
     }
   }
   stage('Remove inactive branch work directory.') {
@@ -26,7 +26,7 @@ node {
     def workDirNames = sh(script: cmd, returnStdout: true).split(/\n/)
     workDirNames.each{
       def branchName = it.trim()
-      if (!activeBranchNames.any{it == branchName}) sh "rm -rf ${WORK_DIR}/${it}"
+      if (!activeBranchNames.contains(branchName)) sh "rm -rf ${WORK_DIR}/${it}"
     }
   }
   stage('Remove inactive branch Nginx setting files.') {
@@ -35,7 +35,7 @@ node {
     nginxSettingFileNames.each{
       def branchName = it.replace("${APP_NAME}_", '').replace('.conf', '').trim()
       echo "デバッグ:Nginxから取り出したブランチ名:" + branchName
-      if (!activeBranchNames.any{it == branchName}) sh "rm -rf ${NGINX_SETTING_DIR}/it"
+      if (!activeBranchNames.contains(branchName)) sh "rm -rf ${NGINX_SETTING_DIR}/it"
     }
   }
 }
