@@ -13,7 +13,7 @@ node {
         ,returnStdout: true
     ).split(/\n/)
     // debug
-    activeBranchNames.forEach{
+    activeBranchNames.each{
       echo 'ブランチ名:' + it
     }
   }
@@ -23,7 +23,7 @@ node {
         ,returnStdout: true
     ).split(/\n/)
     // debug
-    applicationContainerNames.forEach{
+    applicationContainerNames.each{
       echo 'コンテナ名:' + it
     }
   }
@@ -33,7 +33,7 @@ node {
         ,returnStdout: true
     ).split(/\n/)
     // debug
-    workDirNames.forEach{
+    workDirNames.each{
       echo 'ディレクトリ名:' + it
     }
   }
@@ -43,7 +43,7 @@ node {
         ,returnStdout: true
     ).split(/\n/)
     // debug
-    nginxSettingFileNames.forEach{
+    nginxSettingFileNames.each{
       echo 'Nginxの設定ファイル名:' + it
     }
   }
