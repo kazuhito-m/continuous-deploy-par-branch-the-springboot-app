@@ -8,7 +8,7 @@ node {
     checkout scm
   }
   stage('確認') {
-    def test = sh("git branch -a" ,returnStdout: true)
+    def test = sh(script: "git branch -a" ,returnStdout: true)
     echo "結果:" + test
   }
   /*
