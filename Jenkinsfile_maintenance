@@ -34,5 +34,6 @@ node {
       def branchName = it.replace("${APP_NAME}_", '').replace('.conf', '').trim()
       if (!activeBranchNames.contains(branchName)) sh "rm -rf ${NGINX_SETTING_DIR}/${it.trim()}"
     }
+    sh 'nginx -s reload'
   }
 }
