@@ -7,14 +7,9 @@ node {
   stage('Checkout scm') {
     checkout scm
   }
-  stage('確認') {
-    def test = sh(script: "git branch -a" ,returnStdout: true)
-    echo "結果:" + test
-  }
-  /*
   stage('List remote branch name.') {
     activeBranchNames = sh (
-        script: "git branch -a | grep 'remotes\\/origin' | sed -e 's/remotes\\/origin\\///g'"
+        script: "git branch -a | grep 'origin' | sed -e 's/.*origin\\///g'"
         ,returnStdout: true
     ).split(/\n/)
     // debug
@@ -52,5 +47,4 @@ node {
       echo 'Nginxの設定ファイル名:' + it
     }
   }
-  */
 }
