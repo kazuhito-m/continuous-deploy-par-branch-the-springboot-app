@@ -4,6 +4,9 @@ def WORK_DIR = "/var/tmp/${APP_NAME}"
 def NGINX_SETTING_DIR = '/etc/nginx/default.d'
 node {
   def activeBranchNames // 現在リモートに存在するブランチ名
+  stage(Checkout scm) {
+    checkout scm
+  }
   stage('List remote branch name.') {
     activeBranchNames = sh (
         script: "git branch -a | grep 'remotes\\/origin' | sed -e 's/remotes\\/origin\\///g'"
