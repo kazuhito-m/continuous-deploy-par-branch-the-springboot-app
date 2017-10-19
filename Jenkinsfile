@@ -7,14 +7,11 @@ node {
     stage('Checkout Sources') {
       checkout scm
     }
-    stage('Unit Test') {
+    stage('Unit test.') {
       sh './gradlew clean test'
       step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/test/*.xml']) // JUnitテストレポートを保存
     }
-    stage('Jar Build') {
-      sh './gradlew build'
-    }
-    stage('Jar Build') {
+    stage('Jar build.') {
       sh './gradlew build'
     }
     stage('Start Application in Docker container.') {
