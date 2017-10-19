@@ -6,7 +6,7 @@ node {
   def activeBranchNames // 現在リモートに存在するブランチ名
   stage('List remote branch name.') {
     activeBranchNames = sh (
-        script: "git branch -a | grep 'remotes\/origin' | sed -e 's/remotes\/origin\///g'"
+        script: "git branch -a | grep 'remotes\\/origin' | sed -e 's/remotes\\/origin\\///g'"
         ,returnStdout: true
     ).split(/\n/)
     // debug
