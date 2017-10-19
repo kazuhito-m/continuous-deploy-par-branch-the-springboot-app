@@ -18,7 +18,7 @@ node {
     applicationContainerNames.each{
       def branchName = it.replace("${APP_NAME}_", '').trim()
       echo "デバッグ:ブランチ名:" + branchName
-      if (!activeBranchNames.contains(branchName)) sh "docker rm -f ${it}"
+      if (!activeBranchNames.any{it == branchName}) sh "docker rm -f ${it}"
     }
   }
   stage('Remove inactive branch work directory.') {
@@ -26,7 +26,7 @@ node {
     def workDirNames = sh(script: cmd, returnStdout: true).split(/\n/)
     workDirNames.each{
       def branchName = it.trim()
-      if (!activeBranchNames.contains(branchName)) sh "rm -rf ${WORK_DIR}/${it}"
+      if (!activeBranchNames.any{it == branchName}) sh "rm -rf ${WORK_DIR}/${it}"
     }
   }
   stage('Remove inactive branch Nginx setting files.') {
@@ -35,7 +35,7 @@ node {
     nginxSettingFileNames.each{
       def branchName = it.replace("${APP_NAME}_", '').replace('.conf', '').trim()
       echo "デバッグ:Nginxから取り出したブランチ名:" + branchName
-      if (!activeBranchNames.contains(branchName)) sh "rm -rf ${NGINX_SETTING_DIR}/it"
+      if (!activeBranchNames.any{it == branchName}) sh "rm -rf ${NGINX_SETTING_DIR}/it"
     }
   }
 }
