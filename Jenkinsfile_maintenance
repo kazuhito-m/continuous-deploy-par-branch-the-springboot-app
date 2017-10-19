@@ -29,7 +29,7 @@ node {
   }
   stage('Remove inactive branch work directory.') {
     def workDirNames = sh (
-        script: "ls /var/tmp/${WORK_DIR}"
+        script: "ls ${WORK_DIR}"
         ,returnStdout: true
     ).split(/\n/)
     // debug
