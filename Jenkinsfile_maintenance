@@ -1,0 +1,47 @@
+// 定期的にbranchと対応してない(すでに削除された)Dockerコンテナとnginx設定ファイルを削除する。
+def APP_NAME = 'sample-app'
+def WORK_DIR = "/var/tmp/${APP_NAME}"
+def NGINX_SETTING_DIR = '/etc/nginx/default.d'
+node {
+  def activeBranchNames // 現在リモートに存在するブランチ名
+  stage('List remote branch name.') {
+    activeBranchNames = sh (
+        script: "git branch -a | grep 'remotes\/origin' | sed -e 's/remotes\/origin\///g'"
+        ,returnStdout: true
+    ).split(/\n/)
+    // debug
+    activeBranchNames.forEach{
+      echo 'ブランチ名:' + it
+    }
+  }
+  stage('Remove inactive branch container.') {
+    def applicationContainerNames = sh (
+        script: "docker ps --format '{{.Names}}' | grep ${APP_NAME}_"
+        ,returnStdout: true
+    ).split(/\n/)
+    // debug
+    applicationContainerNames.forEach{
+      echo 'コンテナ名:' + it
+    }
+  }
+  stage('Remove inactive branch work directory.') {
+    def workDirNames = sh (
+        script: "ls /var/tmp/${WORK_DIR}"
+        ,returnStdout: true
+    ).split(/\n/)
+    // debug
+    workDirNames.forEach{
+      echo 'ディレクトリ名:' + it
+    }
+  }
+  stage('Remove inactive branch Nginx setting files.') {
+    def nginxSettingFileNames = sh (
+        script: "ls ${NGINX_SETTING_DIR}/${APP_NAME}_*.conf"
+        ,returnStdout: true
+    ).split(/\n/)
+    // debug
+    nginxSettingFileNames.forEach{
+      echo 'Nginxの設定ファイル名:' + it
+    }
+  }
+}
