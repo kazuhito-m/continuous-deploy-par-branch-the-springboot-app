@@ -16,23 +16,26 @@ node {
     def applicationContainerNames = sh(script: cmd, returnStdout: true).split(/\n/)
     // debug
     applicationContainerNames.each{
-      echo 'コンテナ名:' + it
+      def branchName = it.replace("${APP_NAME}_", '').trim()
+      echo "デバッグ:ブランチ名:" + branchName
+      if (!activeBranchNames.contains(branchName)) sh "docker rm -f ${it}"
     }
   }
   stage('Remove inactive branch work directory.') {
     def cmd = "ls ${WORK_DIR}"
     def workDirNames = sh(script: cmd, returnStdout: true).split(/\n/)
-    // debug
     workDirNames.each{
-      echo 'ディレクトリ名:' + it
+      def branchName = it.trim()
+      if (!activeBranchNames.contains(branchName)) sh "rm -rf ${WORK_DIR}/${it}"
     }
   }
   stage('Remove inactive branch Nginx setting files.') {
     def cmd = "ls ${NGINX_SETTING_DIR}"
     def nginxSettingFileNames = sh(script: cmd, returnStdout: true).split(/\n/)
-    // debug
     nginxSettingFileNames.each{
-      echo 'Nginxの設定ファイル名:' + it
+      def branchName = it.replace("${APP_NAME}_", '').replace('.conf', '').trim()
+      echo "デバッグ:Nginxから取り出したブランチ名:" + branchName
+      if (!activeBranchNames.contains(branchName)) sh "rm -rf ${NGINX_SETTING_DIR}/it"
     }
   }
 }
