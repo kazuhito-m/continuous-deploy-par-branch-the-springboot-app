@@ -8,40 +8,28 @@ node {
     checkout scm
   }
   stage('List remote branch name.') {
-    activeBranchNames = sh (
-        script: "git branch -a | grep 'origin' | sed -e 's/.*origin\\///g'"
-        ,returnStdout: true
-    ).split(/\n/)
-    // debug
-    activeBranchNames.each{
-      echo 'ブランチ名:' + it
-    }
+    def cmd = "git branch -a | grep 'origin' | sed -e 's/.*origin\\///g'"
+    activeBranchNames = sh(script: cmd, returnStdout: true).split(/\n/) // コマンド結果をListにして取得
   }
   stage('Remove inactive branch container.') {
-    def applicationContainerNames = sh (
-        script: "docker ps --format '{{.Names}}' | grep ${APP_NAME}_"
-        ,returnStdout: true
-    ).split(/\n/)
+    def cmd = "docker ps --format '{{.Names}}' | grep ${APP_NAME}_"
+    def applicationContainerNames = sh(script: cmd, returnStdout: true).split(/\n/)
     // debug
     applicationContainerNames.each{
       echo 'コンテナ名:' + it
     }
   }
   stage('Remove inactive branch work directory.') {
-    def workDirNames = sh (
-        script: "ls ${WORK_DIR}"
-        ,returnStdout: true
-    ).split(/\n/)
+    def cmd = "ls ${WORK_DIR}"
+    def workDirNames = sh(script: cmd, returnStdout: true).split(/\n/)
     // debug
     workDirNames.each{
       echo 'ディレクトリ名:' + it
     }
   }
   stage('Remove inactive branch Nginx setting files.') {
-    def nginxSettingFileNames = sh (
-        script: "ls ${NGINX_SETTING_DIR}"
-        ,returnStdout: true
-    ).split(/\n/)
+    def cmd = "ls ${NGINX_SETTING_DIR}"
+    def nginxSettingFileNames = sh(script: cmd, returnStdout: true).split(/\n/)
     // debug
     nginxSettingFileNames.each{
       echo 'Nginxの設定ファイル名:' + it
