@@ -39,7 +39,7 @@ node {
   }
   stage('Remove inactive branch Nginx setting files.') {
     def nginxSettingFileNames = sh (
-        script: "ls ${NGINX_SETTING_DIR}/${APP_NAME}_*.conf"
+        script: "ls ${NGINX_SETTING_DIR}"
         ,returnStdout: true
     ).split(/\n/)
     // debug
