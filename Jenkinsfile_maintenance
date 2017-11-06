@@ -12,7 +12,7 @@ node {
     activeBranchNames = sh(script: cmd, returnStdout: true).split(/\n/) as ArrayList // コマンド結果をListにして取得
   }
   stage('Remove inactive branch container.') {
-    def cmd = "docker ps --format '{{.Names}}' | grep ${APP_NAME}_"
+    def cmd = "docker ps --format '{{.Names}}' | grep ${APP_NAME}_ && echo ''"
     def applicationContainerNames = sh(script: cmd, returnStdout: true).split(/\n/)
     applicationContainerNames.each{
       def branchName = it.replace("${APP_NAME}_", '').trim()
